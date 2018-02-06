@@ -1,7 +1,7 @@
 <html>
   <head>
     <style>
-      #filedrag
+      #filedrag, #lclFiledrag
       {
         display: none;
         font-weight: bold;
@@ -14,7 +14,7 @@
         cursor: default;
       }
 
-      #filedrag.hover
+      #filedrag.hover, #lclFiledrag.hover
       {
         color: #f00;
         border-color: #f00;
@@ -30,8 +30,15 @@
   
   <body onload="initControlListeners();">
     <fieldset>
-      <legend>HTML File Upload</legend>
-      <div id="filedrag">Select and drop files here</div>
+      <legend>FCL HTML File Upload</legend>
+      <div id="filedrag">Select and drop FCL files here</div>
+    </fieldset>
+    
+    <div style="height:50px"></div>
+    
+    <fieldset>
+      <legend>LCL HTML File Upload</legend>
+      <div id="lclFiledrag">Select and drop LCL files here</div>
     </fieldset>
   </body>
 </html>

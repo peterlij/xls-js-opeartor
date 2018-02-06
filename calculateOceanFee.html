@@ -18,6 +18,8 @@
       legend {
         margin-bottom: 0px;
         font-size: 18px;
+        color: #0275d8;
+        font-weight: bold;
       }
       
       .form-control {
@@ -30,6 +32,11 @@
       
       .form-group {
         margin-bottom: 0.25rem;
+      }
+      
+      .navbar-text {
+        padding-top: 0px;
+        padding-bottom: 0px;
       }
       
       input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
@@ -48,13 +55,14 @@
     <script src="js/lib/money.min.js"></script>
     
     <script src="js/utils.js"></script>
-    <script src="js/data.js"></script>
+    <script src="js/fclData.js"></script>
+    <script src="js/lclData.js"></script>
     <script src="js/logic.js"></script>
   
     <nav class="navbar navbar-inverse bg-primary">
        <h4 class="text-center text-white navbar-text">Ocean Freight Estimation For Intra-Asia Ocean Shipment</h4>
     </nav>
-    <div class="container mt-5">
+    <div class="container mt-3">
       <form id="form" role="form">
         <div class="row">
           <fieldset class="form-group col-lg-5 col-md-5" >
@@ -142,10 +150,10 @@
           </fieldset>
         </div>
         
-        <div class="row" style="padding-top:15px;"></div>
+        <div class="row" style="padding-top:8px;"></div>
         
         <fieldset class="form-group">
-          <legend>Number of Containers:</legend>
+          <legend><input type="radio" id="fcl" name="cl" checked></input>&nbsp;<label for="fcl"> FCL: Number of Containers:</label></legend>
           <div class="row">
             <div class="form-group col-md-4">
               <label for="numOf20GP" class="col-form-label">Number of 20GP</label>
@@ -161,13 +169,27 @@
             </div>
           </div>
         </fieldset>
-
-        <button type="submit" class="btn btn-primary" onclick="handleSubmit()">Estimated Cost</button>
-      </form>
-      
-      <div id="result" style="padding-top:10px;">
         
-      </div>
+        <div class="row" style="padding-top:8px;"></div>
+        <fieldset class="form-group">
+          <legend><input type="radio" id="lcl" name="cl"></input>&nbsp;<label for="lcl"> LCL: Shipment Detail:</label></legend>
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label for="grossWeight" class="col-form-label">Gross Weight(kg)</label>
+              <input type="number" min="0" class="form-control" id="grossWeight" value="0">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="volume" class="col-form-label">Volume(cbm)</label>
+              <input type="number" min="0" class="form-control" id="volume" value="0">
+            </div>
+          </div>
+         <div id="result" style="height: 1em; padding-top:10px; padding-bottom:20px; font-weight:bold;"></div>
+        
+        <button type="submit" class="btn btn-primary" onclick="handleSubmit()">Estimate Cost</button>
+        </fieldset>
+
+
+      </form>
     </div>
   </body>
 </html>
