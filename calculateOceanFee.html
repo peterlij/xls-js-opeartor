@@ -6,27 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
       body {
         line-height: 1
+        font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+        font-size: 12px;
+        color: #000000;
       }
+      
+      legend {
+        margin-bottom: 0px;
+        font-size: 18px;
+      }
+      
       .form-control {
         padding: 0.25rem 0.75rem;
       }
       .input-group-addon {
         padding: 0.25rem 0.75rem;
+        font-size: 12px;
       }
+      
       .form-group {
-          margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+      }
+      
+      input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 30px white inset;
+        background-image: none;
+        color: rgb(0, 0, 0);
       }
     </style>
   </head>
   <body onload="initControlListeners();">
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.9.3/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/tether.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/validator.js"></script>
     <script src="js/lib/money.min.js"></script>
     
     <script src="js/utils.js"></script>
@@ -37,106 +55,117 @@
        <h4 class="text-center text-white navbar-text">Ocean Freight Estimation For Intra-Asia Ocean Shipment</h4>
     </nav>
     <div class="container mt-5">
-      <form data-toggle="validator">
-        <fieldset class="form-group">
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label for="originCity" class="col-form-label">Origin City</label>
-              <input type="text" class="form-control" id="originCity" placeholder="Origin City" value="Hong Kong" required>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="portOfLoading" class="col-form-label">Port of Loading</label>
-              <input type="text" class="form-control" id="portOfLoading" placeholder="Port of Loading" value="Hong Kong" required>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label for="distanctFromOCity2Loading" class="col-form-label">Distance from Pickup Location to Port of Loading (KM)</label>
-              <input type="number" min="0" class="form-control" id="distanctFromOCity2Loading" placeholder="Distance from Origin City to Port of Loading">
-            </div>
-            <div class="form-group col-md-4">
-              <label for="oCurrValue" class="col-form-label">&nbsp;</label>
-              <div class="input-group">
-                <span class="input-group-addon" id="oCurrLabel">1 UKD is </span>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="oCurrValue" required>
-                <span class="input-group-addon">Dollars</span>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-        <fieldset class="form-group">
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label for="destinationCity" class="col-form-label">Destination City</label>
-              <input type="text" class="form-control" id="destinationCity" placeholder="Destination City" value="Manila" required>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="portOfDischarge" class="col-form-label">Port of Discharge</label>
-              <input type="text" class="form-control" id="portOfDischarge" placeholder="Port of Discharge" value="Manila" required>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label for="distanctFromDischarge2DCity" class="col-form-label">Distance from Port of Discharge to Delivering Location (KM)</label>
-              <input type="number" min="0" class="form-control" id="distanctFromDischarge2DCity" placeholder="Distance from Origin City to Port of Loading">
-            </div>
-            <div class="form-group col-md-4">
-              <label for="dCurrValue" class="col-form-label">&nbsp;</label>
-              <div class="input-group">
-                <span class="input-group-addon" id="dCurrLabel">1 UKD is </span>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="dCurrValue" required>
-                <span class="input-group-addon">Dollars</span>
-              </div>
-            </div>
-          </div>
-        </fieldset>
+      <form id="form" role="form">
         <div class="row">
-          <div class="form-group col-md-4">
-            <label for="numOf20GP" class="col-form-label">Number of 20GP</label>
-            <input type="number" min="0" class="form-control" id="numOf20GP" placeholder="Number of 20GP">
+          <fieldset class="form-group col-lg-5 col-md-5" >
+            <legend>Original:</legend>
+              <div class="form-group">
+                <label for="originCity" class="col-form-label">Origin City</label>
+                <input type="text" class="form-control" id="originCity" required data-required-error="This field is required">
+              </div>
+              
+              <div class="row">
+                <div class="form-group col-lg-5 col-md-5">
+                  <label for="portOfLoading" class="col-form-label">Port of Loading</label>
+                  <input type="text" class="form-control" id="portOfLoading" required>
+                </div>
+                <div class="form-group col-lg-7 col-md-7">
+                <label for="oCurrValue" class="col-form-label">Currency</label>
+                <div class="input-group">
+                  <span class="input-group-addon" id="oCurrLabel">?</span>
+                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="oCurrValue" required>
+                  <span class="input-group-addon">Dollars</span>
+                </div>
+              </div>
+              </div>
+              <div class="form-group">
+                <label for="distanctFromOCity2Loading" class="col-form-label">Distance from Pickup Location to Port of Loading (KM)</label>
+                <input type="number" min="0" class="form-control" id="distanctFromOCity2Loading">
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="eccRequired"> Export customs clearence is required
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="otRequired"> Origin trucking is required
+                  </label>
+                </div>
+              </div>
+          </fieldset>
+          
+          <div class="col-lg-2 col-md-2" style="text-align:center">
           </div>
-          <div class="form-group col-md-4">
-            <label for="numOf40GP" class="col-form-label">Number of 40GP</label>
-            <input type="number" min="0" class="form-control" id="numOf40GP" placeholder="Number of 40GP">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="numOf40HQ" class="col-form-label">Number of 40HQ</label>
-            <input type="number" min="0" class="form-control" id="numOf40HQ" placeholder="Number of 40HQ">
-          </div>
+        
+          <fieldset class="form-group col-lg-5 col-md-5">
+            <legend>Destination:</legend>
+              <div class="form-group">
+                <label for="destinationCity" class="col-form-label">Destination City</label>
+                <input type="text" class="form-control" id="destinationCity" required>
+              </div>
+              <div class="row">
+                <div class="form-group col-lg-5 col-md-5">
+                  <label for="portOfDischarge" class="col-form-label">Port of Discharge</label>
+                  <input type="text" class="form-control" id="portOfDischarge" required>
+                </div>
+                <div class="form-group col-lg-7 col-md-7">
+                  <label for="dCurrValue" class="col-form-label">Currency</label>
+                  <div class="input-group">
+                    <span class="input-group-addon" id="dCurrLabel">?</span>
+                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="dCurrValue" required>
+                    <span class="input-group-addon">Dollars</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="distanctFromDischarge2DCity" class="col-form-label">Distance from Port of Discharge to Delivering Location (KM)</label>
+                <input type="number" min="0" class="form-control" id="distanctFromDischarge2DCity">
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="iccRequired"> Import customs clearence is required
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="dtRequired"> Destination trucking is required
+                  </label>
+                </div>
+              </div>
+          </fieldset>
         </div>
-        <div class="form-group">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" id="eccRequired"> Export customs clearence is required
-            </label>
+        
+        <div class="row" style="padding-top:15px;"></div>
+        
+        <fieldset class="form-group">
+          <legend>Number of Containers:</legend>
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label for="numOf20GP" class="col-form-label">Number of 20GP</label>
+              <input type="number" min="0" class="form-control" id="numOf20GP" value="0">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="numOf40GP" class="col-form-label">Number of 40GP</label>
+              <input type="number" min="0" class="form-control" id="numOf40GP" value="0">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="numOf40HQ" class="col-form-label">Number of 40HQ</label>
+              <input type="number" min="0" class="form-control" id="numOf40HQ" value="0">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" id="otRequired"> Origin trucking is required
-            </label>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" id="iccRequired"> Import customs clearence is required
-            </label>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" id="dtRequired"> Destination trucking is required
-            </label>
-          </div>
-        </div>
+        </fieldset>
 
-        <button type="button" class="btn btn-primary" onclick="get()">Estimated Cost</button>
+        <button type="submit" class="btn btn-primary" onclick="handleSubmit()">Estimated Cost</button>
       </form>
       
-      <div id="result">
+      <div id="result" style="padding-top:10px;">
         
       </div>
     </div>
